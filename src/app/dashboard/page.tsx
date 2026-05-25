@@ -322,7 +322,7 @@ export default function DashboardPage() {
                     boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
                   }}
                   itemStyle={{ color: '#fff', fontSize: 12, fontFamily: 'JetBrains Mono', fontWeight: 'bold' }}
-                  labelStyle={{ color: 'var(--gaia-green-500)', fontSize: 10, uppercase: true, letterSpacing: '0.1em' }}
+                  labelStyle={{ color: 'var(--gaia-green-500)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.1em' }}
                 />
                 <Bar dataKey="predicted" fill="var(--gaia-green-500)" radius={[4, 4, 0, 0]} opacity={0.9} name="PREDICTED" />
                 <Bar dataKey="actual" fill="var(--gaia-cyan)" radius={[4, 4, 0, 0]} opacity={0.7} name="ACTUAL" />

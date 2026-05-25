@@ -18,7 +18,7 @@ export default function DashboardLayout({
   useEffect(() => {
     // Auto-login as demo user for development
     if (!isAuthenticated) {
-      loginDemo('operator');
+      loginDemo('farmer');
     }
   }, [isAuthenticated, loginDemo]);
 
