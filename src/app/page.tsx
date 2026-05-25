@@ -59,7 +59,7 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            Gaia<span className="text-[#00ff88] text-glow-strong">Grid</span>
+            AGRI<span className="text-[#00ff88] text-glow-strong">MIND</span>
           </motion.h1>
 
           <motion.p
@@ -68,7 +68,7 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            AGRIMIND AI
+            SMART FARMING SYSTEM
           </motion.p>
 
           <motion.p
@@ -108,24 +108,7 @@ export default function LandingPage() {
             </Link>
           </motion.div>
 
-          {/* Stats */}
-          <motion.div
-            className="grid grid-cols-3 gap-8 mt-16 max-w-lg mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            {[
-              { value: '95%+', label: 'Detection Accuracy' },
-              { value: '50+', label: 'Crop Diseases' },
-              { value: '<3s', label: 'Analysis Time' },
-            ].map((stat, i) => (
-              <div key={i} className="text-center">
-                <p className="text-2xl font-bold text-[#00ff88]">{stat.value}</p>
-                <p className="text-xs text-[#4a7c5c] mt-1">{stat.label}</p>
-              </div>
-            ))}
-          </motion.div>
+
         </div>
 
         {/* Scroll indicator */}
@@ -222,10 +205,10 @@ export default function LandingPage() {
             <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[#00ff88] to-[#00cc6a] flex items-center justify-center">
               <Leaf className="w-3.5 h-3.5 text-[#030806]" />
             </div>
-            <span className="text-sm font-semibold">GaiaGrid</span>
-            <span className="text-xs text-[#4a7c5c]">AGRIMIND AI</span>
+            <span className="text-sm font-semibold">AGRIMIND</span>
+            <span className="text-xs text-[#4a7c5c]">SMART FARMING</span>
           </div>
-          <p className="text-xs text-[#4a7c5c]">© 2024 GaiaGrid. AI-powered agriculture for a sustainable future.</p>
+          <p className="text-xs text-[#4a7c5c]">© 2024 AGRIMIND. AI-powered agriculture for a sustainable future.</p>
         </div>
       </footer>
     </div>

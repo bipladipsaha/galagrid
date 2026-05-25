@@ -16,7 +16,7 @@ interface AssistantState {
 const WELCOME_MESSAGE: ChatMessage = {
   id: 'welcome',
   role: 'assistant',
-  content: "Hello! I'm **GaiaGrid AI**, your intelligent farming assistant. I can help you with crop disease analysis, sensor data interpretation, weather insights, chemical recommendations, and sustainability strategies.\n\nTry asking me something like:\n- \"Why are my tomato leaves turning yellow?\"\n- \"What's the best organic treatment for early blight?\"\n- \"How can I reduce water usage by 20%?\"",
+  content: "Hello! I'm **AGRIMIND Assistant**, your intelligent farming assistant. I can help you with crop disease analysis, sensor data interpretation, weather insights, chemical recommendations, and sustainability strategies.\n\nTry asking me something like:\n- \"Why are my tomato leaves turning yellow?\"\n- \"What's the best organic treatment for early blight?\"\n- \"How can I reduce water usage by 20%?\"",
   timestamp: new Date(),
 };
 

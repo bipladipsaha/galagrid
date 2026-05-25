@@ -59,7 +59,7 @@ export default function LoginPage() {
               style={{ boxShadow: '0 0 30px rgba(0,255,136,0.3)' }}>
               <Leaf className="w-6 h-6 text-[#030806]" />
             </div>
-            <h1 className="text-xl font-bold text-[#e8f5e9]">Welcome to <span className="text-[#00ff88]">GaiaGrid</span></h1>
+            <h1 className="text-xl font-bold text-[#e8f5e9]">Welcome to <span className="text-[#00ff88]">AGRIMIND</span></h1>
             <p className="text-sm text-[#4a7c5c] mt-1">Sign in to your farm intelligence dashboard</p>
           </div>
 
@@ -95,7 +95,7 @@ export default function LoginPage() {
                 <Mail className="w-4 h-4 text-[#4a7c5c]" />
                 <input
                   type="email"
-                  placeholder="farmer@gaiagrid.ai"
+                  placeholder="farmer@agrimind.ai"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-transparent text-sm text-[#e8f5e9] placeholder-[#2d5a3f] outline-none w-full"

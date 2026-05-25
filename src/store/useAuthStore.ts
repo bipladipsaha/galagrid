@@ -44,7 +44,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     }),
 
   // For demo purposes — bypass Firebase auth or use dynamic
-  loginDemo: (role = 'farmer', email = 'demo@gaiagrid.ai') => {
+  loginDemo: (role = 'farmer', email = 'demo@agrimind.ai') => {
     const namePart = email.split('@')[0];
     const displayName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
     

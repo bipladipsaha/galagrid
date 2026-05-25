@@ -32,7 +32,7 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
               <Leaf className="w-4 h-4 text-[#030806]" />
             </div>
             <span className="text-sm font-bold text-[#e8f5e9]">
-              Gaia<span className="text-[#00ff88]">Grid</span>
+              AGRI<span className="text-[#00ff88]">MIND</span>
             </span>
           </Link>
 

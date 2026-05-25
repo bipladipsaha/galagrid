@@ -1,4 +1,4 @@
-# Agrimind (GaiaGrid) 🌱 - Smart Farming IoT & AI Dashboard
+# Agrimind (AGRIMIND) 🌱 - Smart Farming IoT & AI Dashboard
 
 Agrimind is an end-to-end Smart Agriculture System that bridges physical IoT hardware with a modern, AI-powered web dashboard. It enables farmers to monitor real-time environmental data, automate irrigation, analyze crop diseases using AI, and access critical chemical safety intelligence.
 
@@ -26,7 +26,7 @@ The physical IoT system runs on an ESP32 microcontroller and is responsible for 
 - **Automated Actuation:** Triggers relays and servos based on environmental thresholds.
 - **Fail-safes:** Built-in Firebase readiness checks and connection retries.
 
-## 💻 Web Dashboard (GaiaGrid UI)
+## 💻 Web Dashboard (AGRIMIND UI)
 
 The frontend is a premium, responsive dashboard built to interpret the IoT data and augment it with AI tools.
 
@@ -45,8 +45,8 @@ The frontend is a premium, responsive dashboard built to interpret the IoT data 
 - **Chemical Intelligence & Interactions:** Cross-reference fertilizers and pesticides to prevent toxic combinations and find eco-friendly alternatives.
 
 ## 📁 Project Structure (Web)
-```
-amity/
+```text
+Galagrid/
 ├── src/
 │   ├── app/                 # Next.js App Router (Pages & Layouts)
 │   │   ├── dashboard/       # Main Dashboard, Scanners, Sensors, Chemicals

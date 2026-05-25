@@ -222,7 +222,7 @@ export default function AssistantPage() {
             <Bot className="w-5 h-5 text-[#030806]" />
           </div>
           <div>
-            <h1 className="text-base font-bold text-[#e8f5e9]">GaiaGrid AI Assistant</h1>
+            <h1 className="text-base font-bold text-[#e8f5e9]">AGRIMIND Assistant</h1>
             <div className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full bg-[#00ff88] animate-pulse" style={{ boxShadow: '0 0 6px rgba(0,255,136,0.5)' }} />
               <span className="text-[11px] text-[#4a7c5c]">Online • References farm data in real-time</span>
@@ -325,7 +325,7 @@ export default function AssistantPage() {
           <input
             ref={inputRef}
             type="text"
-            placeholder="Ask GaiaGrid AI anything about your farm..."
+            placeholder="Ask AGRIMIND anything about your farm..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}

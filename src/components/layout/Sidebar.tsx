@@ -57,7 +57,7 @@ export function Sidebar() {
             exit={{ opacity: 0, x: -10 }}
           >
             <h1 className="text-base font-bold text-[#e8f5e9] tracking-tight">
-              Gaia<span className="text-[#00ff88]">Grid</span>
+              AGRI<span className="text-[#00ff88]">MIND</span>
             </h1>
             <p className="text-[10px] text-[#4a7c5c] tracking-widest uppercase -mt-0.5">
               AGRIMIND AI

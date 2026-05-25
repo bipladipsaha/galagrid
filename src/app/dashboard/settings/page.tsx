@@ -37,7 +37,7 @@ export default function SettingsPage() {
             </div>
             <div>
               <p className="text-base font-semibold text-[#e8f5e9]">{user?.displayName || 'Demo User'}</p>
-              <p className="text-sm text-[#4a7c5c]">{user?.email || 'demo@gaiagrid.ai'}</p>
+              <p className="text-sm text-[#4a7c5c]">{user?.email || 'demo@agrimind.ai'}</p>
               <Badge variant="outline" className="mt-1 text-[10px] border-[rgba(0,255,136,0.2)] text-[#00ff88] capitalize">
                 {user?.role || 'farmer'}
               </Badge>
@@ -56,7 +56,7 @@ export default function SettingsPage() {
               <label className="text-xs text-[#81c784] mb-1 block">Email</label>
               <input
                 type="email"
-                defaultValue={user?.email || 'demo@gaiagrid.ai'}
+                defaultValue={user?.email || 'demo@agrimind.ai'}
                 className="w-full px-3 py-2 rounded-lg bg-[rgba(0,255,136,0.04)] border border-[rgba(0,255,136,0.08)] text-sm text-[#e8f5e9] outline-none focus:border-[rgba(0,255,136,0.3)]"
               />
             </div>

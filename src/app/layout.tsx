@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GaiaGrid — AI Agriculture Operating System",
+  title: "AGRIMIND — AI Agriculture Operating System",
   description:
     "AI-powered agricultural intelligence platform with crop disease detection, root cause analysis, chemical intelligence, IoT monitoring, and sustainability analytics.",
   keywords: [
