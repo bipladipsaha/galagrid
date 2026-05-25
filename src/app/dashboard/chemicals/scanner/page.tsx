@@ -76,10 +76,10 @@ export default function BarcodeScannerPage() {
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#e8f5e9]">
+          <h1 className="text-2xl font-bold text-[var(--gaia-text-primary)]">
             Chemical Barcode <span className="text-[#b388ff] text-glow">Scanner</span>
           </h1>
-          <p className="text-sm text-[#4a7c5c] mt-1">
+          <p className="text-sm text-[var(--gaia-text-muted)] mt-1">
             Scan a chemical bottle's barcode or label for instant safety and usage insights
           </p>
         </div>
@@ -129,10 +129,10 @@ export default function BarcodeScannerPage() {
                   >
                     <Scan className="w-10 h-10 text-[#b388ff]" style={{ filter: 'drop-shadow(0 0 10px rgba(179,136,255,0.4))' }} />
                   </motion.div>
-                  <h3 className="text-lg font-semibold text-[#e8f5e9] mb-2">
+                  <h3 className="text-lg font-semibold text-[var(--gaia-text-primary)] mb-2">
                     Take a photo of the Barcode
                   </h3>
-                  <p className="text-sm text-[#4a7c5c] text-center mb-4">
+                  <p className="text-sm text-[var(--gaia-text-muted)] text-center mb-4">
                     or click to browse • Supports JPG, PNG, WebP
                   </p>
                 </div>
@@ -167,7 +167,7 @@ export default function BarcodeScannerPage() {
                       animate={{ top: ['0%', '100%'] }}
                       transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
                     />
-                    <div className="absolute inset-0 bg-[rgba(0,0,0,0.4)] flex items-center justify-center">
+                    <div className="absolute inset-0 bg-white/50 flex items-center justify-center">
                        <span className="text-[#b388ff] font-medium tracking-widest animate-pulse">ANALYZING BARCODE...</span>
                     </div>
                   </>
@@ -178,7 +178,7 @@ export default function BarcodeScannerPage() {
                   <div className="absolute top-3 right-3 flex gap-2">
                     <button
                       onClick={(e) => { e.stopPropagation(); resetScan(); }}
-                      className="p-2 rounded-lg bg-[rgba(0,0,0,0.6)] backdrop-blur-sm text-[#e8f5e9] hover:bg-[rgba(0,0,0,0.8)] transition-colors"
+                      className="p-2 rounded-lg bg-[rgba(0,0,0,0.6)] backdrop-blur-sm text-[var(--gaia-text-primary)] hover:bg-white/90 transition-colors"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -231,8 +231,8 @@ export default function BarcodeScannerPage() {
 
                 <div className="flex items-start justify-between gap-4 mb-4">
                   <div>
-                    <h2 className="text-xl font-bold text-[#e8f5e9]">{result.name}</h2>
-                    <p className="text-xs text-[#4a7c5c] mt-1">Active: {result.activeIngredient}</p>
+                    <h2 className="text-xl font-bold text-[var(--gaia-text-primary)]">{result.name}</h2>
+                    <p className="text-xs text-[var(--gaia-text-muted)] mt-1">Active: {result.activeIngredient}</p>
                   </div>
                   <Badge
                     className="text-xs font-semibold px-3 py-1 bg-[rgba(255,171,0,0.1)] text-[#ffab00] border border-[rgba(255,171,0,0.4)]"
@@ -241,12 +241,12 @@ export default function BarcodeScannerPage() {
                   </Badge>
                 </div>
 
-                <div className="p-4 rounded-lg bg-[rgba(0,255,136,0.03)] border border-[rgba(0,255,136,0.08)] mb-4">
-                  <p className="text-[10px] text-[#4a7c5c] uppercase tracking-wider mb-2 flex items-center gap-2">
+                <div className="p-4 rounded-lg bg-[var(--gaia-green-50)] border border-[rgba(0,255,136,0.08)] mb-4">
+                  <p className="text-[10px] text-[var(--gaia-text-muted)] uppercase tracking-wider mb-2 flex items-center gap-2">
                     <FlaskConical className="w-3 h-3 text-[#00ff88]" />
                     Usage Profile
                   </p>
-                  <p className="text-sm text-[#e8f5e9] leading-relaxed">
+                  <p className="text-sm text-[var(--gaia-text-primary)] leading-relaxed">
                     {result.usage}
                   </p>
                 </div>
@@ -254,12 +254,12 @@ export default function BarcodeScannerPage() {
                 {/* Eco Score */}
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div className="p-3 rounded-lg bg-[rgba(0,255,136,0.04)] border border-[rgba(0,255,136,0.08)]">
-                    <p className="text-[10px] text-[#4a7c5c] uppercase tracking-wider mb-1">Eco Score</p>
+                    <p className="text-[10px] text-[var(--gaia-text-muted)] uppercase tracking-wider mb-1">Eco Score</p>
                     <p className="text-lg font-bold text-[#00ff88]">{result.ecoScore}/100</p>
                   </div>
                   <div className="p-3 rounded-lg bg-[rgba(0,255,136,0.04)] border border-[rgba(0,255,136,0.08)]">
-                    <p className="text-[10px] text-[#4a7c5c] uppercase tracking-wider mb-1">Type</p>
-                    <p className="text-lg font-bold text-[#e8f5e9] capitalize">{result.type}</p>
+                    <p className="text-[10px] text-[var(--gaia-text-muted)] uppercase tracking-wider mb-1">Type</p>
+                    <p className="text-lg font-bold text-[var(--gaia-text-primary)] capitalize">{result.type}</p>
                   </div>
                 </div>
               </motion.div>
@@ -273,13 +273,13 @@ export default function BarcodeScannerPage() {
               >
                 <div className="flex items-center gap-2 mb-4">
                   <Shield className="w-4 h-4 text-[#ffab00]" />
-                  <h3 className="text-sm font-medium text-[#81c784]">Critical Safety Guidelines</h3>
+                  <h3 className="text-sm font-medium text-[var(--gaia-text-secondary)]">Critical Safety Guidelines</h3>
                 </div>
                 <div className="space-y-3">
                   {result.safety.map((rule, i) => (
                     <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-[rgba(255,171,0,0.03)] border border-[rgba(255,171,0,0.08)]">
                        <Shield className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#ffab00]" />
-                       <p className="text-sm text-[#e8f5e9]">{rule}</p>
+                       <p className="text-sm text-[var(--gaia-text-primary)]">{rule}</p>
                     </div>
                   ))}
                 </div>
@@ -311,7 +311,7 @@ export default function BarcodeScannerPage() {
               <h3 className="text-base font-semibold text-[#b388ff] mb-2">
                 Barcode Scan Results
               </h3>
-              <p className="text-sm text-[#4a7c5c] max-w-xs mb-6">
+              <p className="text-sm text-[var(--gaia-text-muted)] max-w-xs mb-6">
                 Take a photo of a chemical bottle's barcode to instantly pull up its safety data sheet and eco-toxicity profile.
               </p>
             </motion.div>

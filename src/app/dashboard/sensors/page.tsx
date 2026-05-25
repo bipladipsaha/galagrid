@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, Wifi, Signal, Clock, RefreshCw, AlertCircle } from 'lucide-react';
+import { Activity, Wifi, Signal, RefreshCw, AlertCircle } from 'lucide-react';
 import {
   AreaChart,
   Area,
@@ -33,14 +33,10 @@ export default function SensorsPage() {
   const [historyRaw, setHistoryRaw] = useState<LiveSensorData[]>([]);
   const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'online' | 'error'>('connecting');
 
-  // 1. We no longer fetch history from Firestore because ESP32 only stores the latest data in RTDB.
-  // We'll just build history locally while the page is open.
   useEffect(() => {
-    // Initial clear
     setHistoryRaw([]);
   }, []);
 
-  // 2. Subscribe to live latest document in Realtime Database
   useEffect(() => {
     setConnectionStatus('connecting');
     
@@ -50,7 +46,6 @@ export default function SensorsPage() {
         if (snapshot.exists()) {
           const raw = snapshot.val();
           
-          // Map ESP32 JSON format to our frontend interface
           const data: LiveSensorData = {
             temperature: raw.temperature || 0,
             humidity: raw.humidity || 0,
@@ -63,14 +58,12 @@ export default function SensorsPage() {
           setLiveData(data);
           setConnectionStatus('online');
           
-          // Append to history array for live chart updating
           setHistoryRaw(prev => {
             const newArray = [...prev, data];
             if (newArray.length > 24) return newArray.slice(1);
             return newArray;
           });
         } else {
-          // Default to 0 if no data exists in Firebase yet
           const data: LiveSensorData = {
             temperature: 0,
             humidity: 0,
@@ -92,7 +85,6 @@ export default function SensorsPage() {
     return () => unsub();
   }, []);
 
-  // Map the raw live data to all available configurations
   const allReadings = useMemo(() => {
     if (!liveData) return null;
     return SENSOR_CONFIGS.map(config => {
@@ -100,23 +92,21 @@ export default function SensorsPage() {
       if (config.type === 'temperature') value = liveData.temperature;
       else if (config.type === 'humidity') value = liveData.humidity;
       else if (config.type === 'soil_moisture') value = liveData.soilMoisture;
-      else value = config.min + (config.max - config.min) * 0.5; // Mock fallback for NPK
+      else value = config.min + (config.max - config.min) * 0.5;
 
       const status = value >= config.optimalMin && value <= config.optimalMax ? 'normal' : 'warning';
       return { config, latest: { value, status } };
     });
   }, [liveData]);
 
-  // Format history for Recharts
   const chartData = useMemo(() => {
     return historyRaw.map(r => {
       let value = 0;
       if (selectedSensor.type === 'temperature') value = r.temperature;
       else if (selectedSensor.type === 'humidity') value = r.humidity;
       else if (selectedSensor.type === 'soil_moisture') value = r.soilMoisture;
-      else value = selectedSensor.min + (selectedSensor.max - selectedSensor.min) * 0.5; // fallback
+      else value = selectedSensor.min + (selectedSensor.max - selectedSensor.min) * 0.5;
 
-      // Handle both Firestore Timestamp and Date objects safely
       const dateObj = r.timestamp?.toDate ? r.timestamp.toDate() : new Date(r.timestamp);
       
       return {
@@ -127,46 +117,45 @@ export default function SensorsPage() {
   }, [historyRaw, selectedSensor]);
 
   return (
-    <div className="p-4 lg:p-6 min-h-full bg-gradient-mesh">
+    <div className="max-w-[1600px] mx-auto min-h-full space-y-6">
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-        <div className="flex items-center gap-2 text-[#00e5ff] text-xs mb-2">
-          <Activity className="w-4 h-4" />
-          <span className="uppercase tracking-wider font-medium">IoT Monitoring System</span>
+      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="mb-8 relative z-20">
+        <div className="flex items-center gap-3 text-[var(--gaia-cyan)] text-xs mb-3">
+          <Activity className="w-4 h-4 animate-pulse" />
+          <span className="uppercase tracking-[0.2em] font-bold">IoT Telemetry Array</span>
         </div>
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div>
-            <h1 className="text-2xl font-bold text-[#e8f5e9]">
-              Live <span className="text-[#00e5ff]">Telemetry</span>
+            <h1 className="text-3xl lg:text-4xl font-bold text-[var(--gaia-text-primary)] tracking-tight">
+              Live <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--gaia-cyan)] to-[var(--gaia-green-500)] drop-shadow-[0_0_15px_rgba(0,240,255,0.4)]">Telemetry</span>
             </h1>
-            <p className="text-sm text-[#4a7c5c] mt-1">Real-time DHT22 and Soil Moisture streams</p>
           </div>
           <div className="flex items-center gap-2">
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-xl border ${
-              connectionStatus === 'online' ? 'bg-[rgba(0,255,136,0.06)] border-[rgba(0,255,136,0.2)]' :
-              connectionStatus === 'connecting' ? 'bg-[rgba(255,171,0,0.06)] border-[rgba(255,171,0,0.2)]' :
-              'bg-[rgba(255,61,87,0.06)] border-[rgba(255,61,87,0.2)]'
+            <div className={`flex items-center gap-3 px-5 py-2.5 rounded-xl border backdrop-blur-md shadow-md ${
+              connectionStatus === 'online' ? 'bg-[rgba(0,255,136,0.05)] border-[rgba(0,255,136,0.3)] shadow-[0_0_15px_rgba(0,255,136,0.1)]' :
+              connectionStatus === 'connecting' ? 'bg-[rgba(255,171,0,0.05)] border-[rgba(255,171,0,0.3)]' :
+              'bg-[rgba(255,42,77,0.05)] border-[rgba(255,42,77,0.3)]'
             }`}>
               {connectionStatus === 'online' ? (
                 <>
-                  <Wifi className="w-4 h-4 text-[#00ff88]" />
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-medium text-[#00ff88]">Stream Active</span>
+                  <Wifi className="w-4 h-4 text-[var(--gaia-green-500)]" />
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-[var(--gaia-green-500)] tracking-widest uppercase">Stream Active</span>
                     <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00ff88] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00ff88]"></span>
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--gaia-green-500)] opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--gaia-green-500)] shadow-[0_0_8px_var(--gaia-green-500)]"></span>
                     </span>
                   </div>
                 </>
               ) : connectionStatus === 'connecting' ? (
                 <>
-                  <RefreshCw className="w-4 h-4 text-[#ffab00] animate-spin" />
-                  <span className="text-xs font-medium text-[#ffab00]">Connecting to Node...</span>
+                  <RefreshCw className="w-4 h-4 text-[var(--gaia-amber)] animate-spin" />
+                  <span className="text-xs font-bold text-[var(--gaia-amber)] tracking-widest uppercase">Syncing...</span>
                 </>
               ) : (
                 <>
-                  <AlertCircle className="w-4 h-4 text-[#ff3d57]" />
-                  <span className="text-xs font-medium text-[#ff3d57]">Connection Lost</span>
+                  <AlertCircle className="w-4 h-4 text-[var(--gaia-red)]" />
+                  <span className="text-xs font-bold text-[var(--gaia-red)] tracking-widest uppercase">Signal Lost</span>
                 </>
               )}
             </div>
@@ -175,51 +164,51 @@ export default function SensorsPage() {
       </motion.div>
 
       {/* Sensor Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 relative z-10">
         {!allReadings ? (
-          [...Array(5)].map((_, i) => <ShimmerLoader key={i} className="h-28 rounded-xl" />)
+          [...Array(5)].map((_, i) => <ShimmerLoader key={i} className="h-32 rounded-2xl opacity-50" />)
         ) : (
           allReadings.map(({ config, latest }, i) => {
             const isSelected = selectedSensor.type === config.type;
             return (
               <motion.div
                 key={config.type}
-                className={`p-4 rounded-xl cursor-pointer transition-all ${
+                className={`p-5 rounded-2xl cursor-pointer transition-all ${
                   isSelected
-                    ? 'glass-card border-[rgba(0,255,136,0.25)] glow-green'
-                    : 'bg-[rgba(0,255,136,0.02)] border border-[rgba(0,255,136,0.05)] hover:border-[rgba(0,255,136,0.15)]'
+                    ? 'glass-panel border-[var(--gaia-cyan)] shadow-[0_0_20px_rgba(0,240,255,0.15)] bg-[rgba(0,240,255,0.05)]'
+                    : 'bg-black/5 border border-[var(--gaia-border-glass)] hover:border-[rgba(0,0,0,0.15)]'
                 }`}
                 onClick={() => setSelectedSensor(config)}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.04 }}
+                transition={{ delay: i * 0.05 }}
                 whileHover={{ scale: 1.02 }}
               >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[11px] text-[#4a7c5c] uppercase tracking-wider">{config.label}</span>
-                  <div className={`status-dot ${latest.status === 'normal' ? 'status-dot-normal' : 'status-dot-warning'}`} />
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[11px] font-bold text-[var(--gaia-text-muted)] uppercase tracking-widest font-mono">{config.label}</span>
+                  <div className={`w-2 h-2 rounded-full ${latest.status === 'normal' ? 'bg-[var(--gaia-green-500)] shadow-[0_0_8px_var(--gaia-green-500)] animate-pulse' : 'bg-[var(--gaia-amber)] shadow-[0_0_8px_var(--gaia-amber)] animate-ping'}`} />
                 </div>
-                <div className="flex items-end gap-1.5">
+                <div className="flex items-end gap-1.5 mb-2">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={latest.value}
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 5 }}
-                      className="text-2xl font-bold text-[#e8f5e9]"
+                      className="text-3xl font-bold text-[var(--gaia-text-primary)] font-mono"
                     >
                       {latest.value}
                     </motion.span>
                   </AnimatePresence>
-                  <span className="text-xs text-[#4a7c5c] mb-1">{config.unit}</span>
+                  <span className="text-xs text-[var(--gaia-text-dim)] font-bold mb-1.5 font-mono">{config.unit}</span>
                 </div>
-                <div className="mt-1.5">
-                  <div className="h-1 rounded-full bg-[rgba(0,255,136,0.06)] overflow-hidden">
+                <div className="mt-2">
+                  <div className="h-1.5 rounded-full bg-black/5 overflow-hidden border border-[var(--gaia-border-glass)]">
                     <motion.div
                       className="h-full rounded-full"
                       animate={{ width: `${Math.min(100, Math.max(0, ((latest.value - config.min) / (config.max - config.min)) * 100))}%` }}
                       transition={{ type: "spring", stiffness: 50 }}
-                      style={{ background: config.color, opacity: 0.8 }}
+                      style={{ background: config.color, boxShadow: `0 0 10px ${config.color}` }}
                     />
                   </div>
                 </div>
@@ -233,113 +222,112 @@ export default function SensorsPage() {
       <AnimatePresence mode="wait">
         <motion.div
           key={selectedSensor.type}
-          className="glass-card p-6"
-          initial={{ opacity: 0, y: 20 }}
+          className="glass-panel p-8"
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5 }}
         >
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
             <div>
-              <h3 className="text-xl font-bold text-[#e8f5e9] flex items-center gap-2">
-                <div className="w-2 h-6 rounded-sm" style={{ background: selectedSensor.color }} />
-                {selectedSensor.label} Trend
+              <h3 className="text-2xl font-bold text-[var(--gaia-text-primary)] flex items-center gap-3">
+                <div className="w-2 h-8 rounded-full" style={{ background: selectedSensor.color, boxShadow: `0 0 10px ${selectedSensor.color}` }} />
+                {selectedSensor.label} Matrix
               </h3>
-              <p className="text-xs text-[#4a7c5c] mt-1">Live data stream • Updates every 5s</p>
             </div>
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="px-4 py-2 rounded-lg bg-[rgba(0,0,0,0.2)] border border-[rgba(255,255,255,0.05)]">
-                <p className="text-[10px] text-[#4a7c5c] uppercase mb-0.5">Optimal Range</p>
-                <p className="text-sm font-medium" style={{ color: selectedSensor.color }}>
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="px-5 py-2.5 rounded-xl bg-black/5 border border-[var(--gaia-border-glass)]">
+                <p className="text-[10px] text-[var(--gaia-text-muted)] uppercase font-mono tracking-widest mb-1 font-bold">Optimal Bandwidth</p>
+                <p className="text-sm font-bold font-mono" style={{ color: selectedSensor.color, textShadow: `0 0 10px ${selectedSensor.color}80` }}>
                   {selectedSensor.optimalMin} – {selectedSensor.optimalMax} {selectedSensor.unit}
                 </p>
               </div>
-              <Badge variant="outline" className="px-3 py-1.5 border-[rgba(0,255,136,0.3)] text-[#00ff88] bg-[rgba(0,255,136,0.05)]">
-                <Signal className="w-3.5 h-3.5 mr-1.5 animate-pulse" />
-                Live WebSocket
+              <Badge variant="outline" className="px-4 py-2 border-[var(--gaia-cyan)] text-[var(--gaia-cyan)] bg-[rgba(0,240,255,0.05)] font-mono uppercase tracking-widest font-bold">
+                <Signal className="w-4 h-4 mr-2 animate-pulse" />
+                WS Connected
               </Badge>
             </div>
           </div>
 
           {!liveData ? (
-            <div className="h-64 flex items-center justify-center">
-              <ShimmerLoader className="w-full h-full rounded-xl" />
+            <div className="h-80 flex items-center justify-center">
+              <ShimmerLoader className="w-full h-full rounded-2xl opacity-50" />
             </div>
           ) : (
             <>
-              <div className="h-[300px]">
+              <div className="h-[350px] relative z-10">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                     <defs>
                       <linearGradient id={`gradient-${selectedSensor.type}`} x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={selectedSensor.color} stopOpacity={0.4} />
-                        <stop offset="95%" stopColor={selectedSensor.color} stopOpacity={0} />
+                        <stop offset="0%" stopColor={selectedSensor.color} stopOpacity={0.6} />
+                        <stop offset="100%" stopColor={selectedSensor.color} stopOpacity={0} />
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
                     <XAxis 
                       dataKey="time" 
-                      tick={{ fill: '#4a7c5c', fontSize: 11 }} 
+                      tick={{ fill: 'var(--gaia-text-muted)', fontSize: 10, fontFamily: 'JetBrains Mono' }} 
                       axisLine={false} 
                       tickLine={false}
                       minTickGap={30}
                     />
                     <YAxis
-                      tick={{ fill: '#4a7c5c', fontSize: 11 }}
+                      tick={{ fill: 'var(--gaia-text-muted)', fontSize: 10, fontFamily: 'JetBrains Mono' }}
                       axisLine={false}
                       tickLine={false}
                       domain={['dataMin - 2', 'dataMax + 2']}
                       tickFormatter={(val) => val.toFixed(1)}
                     />
                     <Tooltip
+                      cursor={{ stroke: 'rgba(0,0,0,0.1)', strokeWidth: 1, strokeDasharray: '4 4' }}
                       contentStyle={{
-                        background: 'rgba(10, 26, 16, 0.9)',
+                        background: 'rgba(2, 6, 4, 0.9)',
+                        backdropFilter: 'blur(10px)',
                         border: '1px solid rgba(0,255,136,0.2)',
                         borderRadius: '12px',
-                        boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
-                        backdropFilter: 'blur(8px)'
+                        boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
                       }}
-                      itemStyle={{ color: '#e8f5e9', fontSize: 13, fontWeight: 'bold' }}
-                      labelStyle={{ color: '#81c784', fontSize: 11, marginBottom: '4px' }}
+                      itemStyle={{ color: '#fff', fontSize: 12, fontFamily: 'JetBrains Mono', fontWeight: 'bold' }}
+                      labelStyle={{ color: 'var(--gaia-text-muted)', fontSize: 10, fontFamily: 'JetBrains Mono', textTransform: 'uppercase', letterSpacing: '0.1em' }}
                     />
                     
-                    {/* Reference lines for optimal range */}
                     <Area
                       type="monotone"
                       dataKey={() => selectedSensor.optimalMax}
                       stroke="none"
-                      fill="rgba(0,255,136,0.02)"
+                      fill="rgba(0,0,0,0.02)"
                       dot={false}
                       activeDot={false}
                       isAnimationActive={false}
                     />
                     
-                    {/* The actual data line */}
                     <Area
                       type="monotone"
                       dataKey="value"
                       stroke={selectedSensor.color}
-                      strokeWidth={3}
+                      strokeWidth={4}
                       fill={`url(#gradient-${selectedSensor.type})`}
                       dot={false}
                       activeDot={{ r: 6, fill: '#030806', stroke: selectedSensor.color, strokeWidth: 3 }}
-                      isAnimationActive={false} // Disable to make live appending smoother
+                      isAnimationActive={false}
                     />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
 
               {/* Stats row */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-8 relative z-10">
                 {[
-                  { label: 'Current Reading', value: chartData[chartData.length - 1]?.value || 0 },
-                  { label: 'Moving Average', value: parseFloat((chartData.reduce((s, d) => s + d.value, 0) / (chartData.length || 1)).toFixed(1)) },
+                  { label: 'Current Output', value: chartData[chartData.length - 1]?.value || 0 },
+                  { label: 'Moving Avg', value: parseFloat((chartData.reduce((s, d) => s + d.value, 0) / (chartData.length || 1)).toFixed(1)) },
                   { label: 'Session Min', value: chartData.length > 0 ? Math.min(...chartData.map((d) => d.value)) : 0 },
                   { label: 'Session Max', value: chartData.length > 0 ? Math.max(...chartData.map((d) => d.value)) : 0 },
                 ].map((stat, i) => (
-                  <div key={i} className="p-4 rounded-xl bg-[rgba(0,0,0,0.2)] border border-[rgba(255,255,255,0.03)] flex flex-col items-center justify-center group hover:bg-[rgba(0,255,136,0.02)] hover:border-[rgba(0,255,136,0.1)] transition-colors">
-                    <p className="text-[10px] text-[#4a7c5c] uppercase tracking-wider mb-1 group-hover:text-[#81c784] transition-colors">{stat.label}</p>
-                    <p className="text-xl font-bold text-[#e8f5e9]">
-                      {stat.value} <span className="text-xs text-[#4a7c5c] font-normal">{selectedSensor.unit}</span>
+                  <div key={i} className="p-5 rounded-2xl bg-black/5 border border-[var(--gaia-border-glass)] flex flex-col items-center justify-center hover:bg-[rgba(0,0,0,0.04)] hover:border-[var(--gaia-border-glass)] transition-colors">
+                    <p className="text-[10px] text-[var(--gaia-text-muted)] font-mono uppercase tracking-widest mb-2 font-bold">{stat.label}</p>
+                    <p className="text-2xl font-bold text-[var(--gaia-text-primary)] font-mono drop-shadow-[0_0_8px_rgba(0,0,0,0.1)]">
+                      {stat.value} <span className="text-[10px] text-[var(--gaia-text-dim)] font-normal ml-1">{selectedSensor.unit}</span>
                     </p>
                   </div>
                 ))}

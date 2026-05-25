@@ -15,9 +15,11 @@ import {
   Leaf,
   ChevronLeft,
   ChevronRight,
+  LogOut,
 } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -36,38 +38,45 @@ const BOTTOM_ITEMS = [
 export function Sidebar() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+  const { logout } = useAuthStore();
+
+  const handleLogout = () => {
+    logout();
+    window.location.href = '/login';
+  };
 
   return (
     <motion.aside
       className={cn(
-        'hidden lg:flex flex-col h-screen sticky top-0 border-r border-[rgba(0,255,136,0.08)] bg-[#050a07] z-40',
-        'transition-all duration-300'
+        'hidden lg:flex flex-col sticky top-4 h-[calc(100vh-2rem)] ml-4 z-40',
+        'glass-panel transition-all duration-300'
       )}
-      animate={{ width: collapsed ? 72 : 240 }}
+      animate={{ width: collapsed ? 80 : 260 }}
     >
-      {/* Logo */}
-      <div className="flex items-center gap-3 px-4 h-16 border-b border-[rgba(0,255,136,0.08)]">
-        <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-gradient-to-br from-[#00ff88] to-[#00cc6a] flex items-center justify-center">
-          <Leaf className="w-5 h-5 text-[#030806]" />
+      {/* Brand Logo */}
+      <div className="flex items-center gap-4 px-5 h-20 border-b border-[var(--gaia-border-glass)] relative overflow-hidden bg-white/50">
+        <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[var(--gaia-green-500)] flex items-center justify-center shadow-md relative">
+          <Leaf className="w-5 h-5 text-[var(--gaia-text-primary)]" />
         </div>
         {!collapsed && (
           <motion.div
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -10 }}
+            className="flex flex-col"
           >
-            <h1 className="text-base font-bold text-[#e8f5e9] tracking-tight">
-              AGRI<span className="text-[#00ff88]">MIND</span>
+            <h1 className="text-lg font-bold text-[var(--gaia-green-800)] tracking-wide font-display">
+              AGRI<span className="text-[var(--gaia-green-500)]">MIND</span>
             </h1>
-            <p className="text-[10px] text-[#4a7c5c] tracking-widest uppercase -mt-0.5">
-              AGRIMIND AI
+            <p className="text-[10px] text-[var(--gaia-text-muted)] tracking-[0.2em] uppercase font-mono mt-0.5">
+              Intelligence
             </p>
           </motion.div>
         )}
       </div>
 
       {/* Nav Items */}
-      <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-3 py-6 space-y-2 overflow-y-auto no-scrollbar">
         {NAV_ITEMS.map((item) => {
           const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname?.startsWith(item.href));
           const Icon = item.icon;
@@ -76,28 +85,35 @@ export function Sidebar() {
             <Link key={item.href} href={item.href}>
               <motion.div
                 className={cn(
-                  'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group relative',
+                  'flex items-center gap-4 px-3 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden',
                   isActive
-                    ? 'bg-[rgba(0,255,136,0.1)] text-[#00ff88]'
-                    : 'text-[#81c784] hover:bg-[rgba(0,255,136,0.05)] hover:text-[#a5d6a7]'
+                    ? 'bg-[var(--gaia-green-50)] text-[var(--gaia-green-500)] border border-[var(--gaia-green-200)] shadow-sm'
+                    : 'text-[var(--gaia-text-muted)] hover:bg-[rgba(0,0,0,0.02)] hover:text-[var(--gaia-green-800)] border border-transparent'
                 )}
-                whileHover={{ x: 2 }}
+                whileHover={{ x: isActive ? 0 : 4 }}
                 whileTap={{ scale: 0.98 }}
               >
                 {/* Active indicator */}
                 {isActive && (
                   <motion.div
-                    className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 rounded-r-full bg-[#00ff88]"
+                    className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--gaia-green-500)]"
                     layoutId="activeIndicator"
-                    style={{ boxShadow: '0 0 10px rgba(0,255,136,0.5)' }}
                   />
                 )}
-                <Icon className={cn('w-5 h-5 flex-shrink-0', isActive && 'drop-shadow-[0_0_6px_rgba(0,255,136,0.5)]')} />
+                
+                {/* Icon Container */}
+                <div className="relative flex items-center justify-center w-6 h-6">
+                  {isActive && <div className="absolute inset-0 bg-[var(--gaia-green-200)] blur-md opacity-40 rounded-full" />}
+                  <Icon className={cn('w-5 h-5 relative z-10 transition-colors', isActive ? 'text-[var(--gaia-green-500)]' : 'group-hover:text-[var(--gaia-green-800)]')} />
+                </div>
+
                 {!collapsed && (
-                  <span className="text-sm font-medium">{item.label}</span>
+                  <span className="text-sm font-semibold tracking-wide">{item.label}</span>
                 )}
+                
+                {/* Badge */}
                 {isActive && item.label === 'AI Scanner' && !collapsed && (
-                  <span className="ml-auto px-1.5 py-0.5 text-[9px] font-bold bg-[#00ff88] text-[#030806] rounded-full">
+                  <span className="ml-auto px-2 py-0.5 text-[10px] font-bold bg-[var(--gaia-cyan)] text-[var(--gaia-green-900)] rounded-full shadow-sm">
                     AI
                   </span>
                 )}
@@ -107,8 +123,8 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* Bottom items */}
-      <div className="px-2 pb-2 space-y-1 border-t border-[rgba(0,255,136,0.08)] pt-2">
+      {/* Bottom Actions */}
+      <div className="p-3 space-y-2 border-t border-[var(--gaia-border-glass)] bg-white/40">
         {BOTTOM_ITEMS.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -117,26 +133,34 @@ export function Sidebar() {
             <Link key={item.href} href={item.href}>
               <div
                 className={cn(
-                  'flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200',
+                  'flex items-center gap-4 px-3 py-2.5 rounded-xl transition-all duration-200',
                   isActive
-                    ? 'bg-[rgba(0,255,136,0.1)] text-[#00ff88]'
-                    : 'text-[#4a7c5c] hover:bg-[rgba(0,255,136,0.05)] hover:text-[#81c784]'
+                    ? 'bg-[var(--gaia-green-50)] text-[var(--gaia-green-500)]'
+                    : 'text-[var(--gaia-text-muted)] hover:bg-[rgba(0,0,0,0.02)] hover:text-[var(--gaia-green-800)]'
                 )}
               >
-                <Icon className="w-4 h-4 flex-shrink-0" />
-                {!collapsed && <span className="text-sm">{item.label}</span>}
+                <Icon className="w-5 h-5 flex-shrink-0" />
+                {!collapsed && <span className="text-sm font-medium">{item.label}</span>}
               </div>
             </Link>
           );
         })}
+        
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-4 px-3 py-2.5 rounded-xl transition-all duration-200 text-[var(--gaia-red)] hover:bg-red-50 w-full"
+        >
+          <LogOut className="w-5 h-5 flex-shrink-0" />
+          {!collapsed && <span className="text-sm font-medium">Log Out</span>}
+        </button>
       </div>
 
       {/* Collapse toggle */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="flex items-center justify-center h-10 border-t border-[rgba(0,255,136,0.08)] text-[#4a7c5c] hover:text-[#00ff88] transition-colors"
+        className="flex items-center justify-center h-12 bg-white/60 hover:bg-[var(--gaia-green-50)] text-[var(--gaia-text-muted)] hover:text-[var(--gaia-green-500)] transition-colors border-t border-[var(--gaia-border-glass)]"
       >
-        {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+        {collapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
       </button>
     </motion.aside>
   );

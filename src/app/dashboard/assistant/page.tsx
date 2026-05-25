@@ -1,177 +1,153 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Bot, User, Sparkles, Leaf, Droplets, Bug, FlaskConical } from 'lucide-react';
+import { Send, Bot, User, Sparkles, Leaf, Droplets, Bug, FlaskConical, Network, Terminal } from 'lucide-react';
 import { useAssistantStore } from '@/store/useAssistantStore';
 import { useRef, useEffect, useCallback } from 'react';
 import type { ChatMessage } from '@/types';
 
 const SUGGESTED_PROMPTS = [
-  { icon: Bug, text: 'Why are tomato leaves turning yellow?', color: '#ffab00' },
-  { icon: Droplets, text: 'How to reduce water usage by 20%?', color: '#00e5ff' },
-  { icon: FlaskConical, text: 'Best organic fertilizer for rice?', color: '#b388ff' },
-  { icon: Leaf, text: 'How to prevent fungal disease in monsoon?', color: '#00ff88' },
+  { icon: Bug, text: 'Analyze pathogenic vectors for yellowing leaves', color: 'var(--gaia-amber)' },
+  { icon: Droplets, text: 'Optimize H2O flux by 20%', color: 'var(--gaia-cyan)' },
+  { icon: FlaskConical, text: 'Calculate optimal bio-nutrient synthesis', color: 'var(--gaia-purple)' },
+  { icon: Network, text: 'Execute monsoon fungal resistance protocol', color: 'var(--gaia-green-500)' },
 ];
 
 // Simulated AI responses
 const AI_RESPONSES: Record<string, string> = {
-  'yellow': `**Possible causes for yellowing tomato leaves:**
+  'yellow': `**[NEURAL DIAGNOSTIC]: Yellowing Leaf Vectors**
 
-🔬 **Nitrogen Deficiency** — Lower leaves yellowing first (most common)
-- Your current N level: **340 mg/kg** (above optimal, but check distribution)
-- Consider foliar spray of urea (0.5%) for quick uptake
+🔬 **Nitrogen Deficiency** — Lower biomass yellowing (high probability)
+- Current N-level: **340 mg/kg** (Surplus detected. Warning: Potential distribution failure)
+- > *Protocol*: Initiate foliar urea spray (0.5%) for immediate cellular uptake.
 
-🌡️ **Temperature Stress**
-- Current temperature: **28°C** (within range, but nights above 20°C can cause stress)
-- Monitor night temperatures for next 48 hours
+🌡️ **Thermal Stress**
+- Current temp: **28°C** (Optimal)
+- > *Protocol*: Monitor nocturnal thermal fluctuations for next 48h.
 
-💧 **Overwatering**
-- Soil moisture at **78%** ⚠️ exceeds optimal (55%)
-- Reduce irrigation frequency by 30%
-- Switch to drip irrigation if using overhead sprinklers
+💧 **Hydration Overload**
+- Soil moisture at **78%** ⚠️ (Critical: Exceeds 55% optimal threshold)
+- > *Protocol*: Throttle irrigation matrix by 30%. Switch to drip-line distribution.
 
-🦠 **Early Blight (Alternaria)**
-- Current disease risk: **72%** — elevated
-- Humidity at **88%** is creating favorable conditions
-- Recommend preventive Chlorothalonil spray at 2g/L
+🦠 **Pathogen Alert: Alternaria (Early Blight)**
+- Risk factor: **72%** (Elevated)
+- Catalyst: **88%** ambient humidity.
+- > *Protocol*: Deploy Chlorothalonil synthesis at 2g/L.
 
-📊 **Based on your sensor data**, the most likely cause is **overwatering combined with high humidity**, which is creating conditions favorable for both nutrient lockout and fungal infection.
+📊 **SYSTEM CONCLUSION:** 
+Root cause identified as **Hydration Overload** compounding with **Elevated Humidity**, triggering nutrient lockout and early fungal propagation.
 
-> **Action**: Reduce irrigation immediately, apply preventive fungicide within 48 hours, and scan affected leaves using the AI Scanner for precise diagnosis.`,
+> **ACTION REQUIRED**: Throttle irrigation immediately. Deploy fungicide. Initialize full canopy scan.`,
 
-  'water': `**Water Usage Optimization Strategy:**
+  'water': `**[OPTIMIZATION]: H2O Flux Protocol**
 
-📊 **Current Usage Analysis:**
-- Daily average: **2,450L** across all fields
-- Optimal target: **1,800L** (26% reduction possible)
+📊 **Telemetry Analysis:**
+- Current daily flux: **2,450L**
+- Target optimal flux: **1,800L** (26% efficiency gain possible)
 
-💡 **Recommended Actions:**
+💡 **Execution Directives:**
 
-1. **Switch to Drip Irrigation** 💰 Save 30-40%
-   - Replace overhead sprinklers in Fields A & C
-   - ROI payback: ~2 seasons
-   - Estimated savings: 735L/day
+1. **Deploy Drip Irrigation Matrix** 💰 (30-40% Gain)
+   - Target Sectors: Alpha & Gamma fields.
+   - Projected savings: 735L/cycle.
 
-2. **Mulching** 🌱 Save 15-25%
-   - Apply organic mulch (straw/leaf litter) around crop bases
-   - Reduces evaporation significantly
-   - Cost: Very low
+2. **Bio-Mulching Integration** 🌱 (15-25% Gain)
+   - Deploy organic cover to minimize surface evaporation.
+   - Cost: Minimal. Impact: High.
 
-3. **Sensor-Based Scheduling** 📡
-   - Your soil moisture sensors show watering during peak evaporation hours
-   - **Shift irrigation to 5-7 AM** — reduces loss by 20%
-   - Automate based on soil moisture threshold (trigger at 40%, stop at 60%)
+3. **Algorithmic Scheduling** 📡
+   - Sensory logs indicate suboptimal timing (peak solar evaporation).
+   - > *Action*: Realign irrigation window to 0500-0700 hours.
+   - Projected savings: 490L/cycle.
 
-4. **Rainwater Harvesting** 🌧️
-   - Expected rainfall this week: **60mm** on Wednesday
-   - Setup collection system to capture ~40% for reuse
+4. **Atmospheric Harvesting** 🌧️
+   - Meteorological data indicates **60mm** precipitation incoming at T+48h.
+   - > *Action*: Engage collection arrays to capture 40% volume.
 
-📈 **Projected savings with all measures:**
-| Measure | Daily Savings | Annual Savings |
-|---------|--------------|----------------|
-| Drip Irrigation | 735L | 268,275L |
-| Mulching | 367L | 133,955L |
-| Smart Scheduling | 490L | 178,850L |
-| **Total** | **1,592L** | **581,080L** |
+📈 **Projected System Efficiency:**
+Total daily reduction: **1,592L**
+Ecosystem Impact Score will increase from **72** to **89**.`,
 
-> Your **Sustainability Score** would improve from **72** to **89** with these changes.`,
+  'organic': `**[SYNTHESIS]: Bio-Nutrient Optimization**
 
-  'organic': `**Best Organic Fertilizers for Rice:**
+🌾 **Primary Recommendations (Ranked by Efficacy):**
 
-🌾 **Top Recommendations (ranked by effectiveness):**
-
-1. **Vermicompost** ⭐ Best Overall
-   - NPK: ~1.5-2.0-1.0
-   - Application: 2-3 tons/acre as basal
-   - Benefits: Improves soil structure, adds beneficial microbes
-   - Sustainability Score: **95/100**
+1. **Vermicompost Substrate** ⭐ (Optimal)
+   - NPK Matrix: ~1.5-2.0-1.0
+   - Deployment: 2-3 tons/acre (basal layer).
+   - Eco-Score: **95/100**
 
 2. **Green Manure (Sesbania/Dhaincha)**
-   - Incorporates 60-80 kg N/acre when ploughed in
-   - Plant 45 days before transplanting
-   - Zero cost, maximum sustainability
-   - Sustainability Score: **100/100**
+   - N-Fixation: 60-80 kg/acre.
+   - Eco-Score: **100/100** (Maximum Sustainability)
 
-3. **Neem Cake**
-   - NPK: ~5.0-1.0-1.5
-   - Application: 200-300 kg/acre
-   - Dual benefit: fertilizer + pest repellent
-   - Sustainability Score: **90/100**
+3. **Neem Extract Cake**
+   - NPK Matrix: ~5.0-1.0-1.5
+   - Dual function: Nutrient source + Pathogen deterrent.
+   - Eco-Score: **90/100**
 
-4. **Fish Amino Acid**
-   - Foliar spray at 2-3ml/L during tillering
-   - Rich in amino acids for growth boost
-   - Sustainability Score: **85/100**
+4. **Amino Acid Foliar Matrix**
+   - Deployment: 2-3ml/L during tillering phase.
+   - Eco-Score: **85/100**
 
-📊 **Based on your soil data:**
-- Current N: **210 mg/kg** (adequate)
-- Current P: **15 mg/kg** (low ⚠️)
-- Current K: **180 mg/kg** (adequate)
+📊 **Current Substrate Telemetry:**
+- N-Level: **210 mg/kg** (Stable)
+- P-Level: **15 mg/kg** (⚠️ CRITICAL LOW)
+- K-Level: **180 mg/kg** (Stable)
 
-> **Priority**: Address phosphorus deficiency with **bone meal** (200 kg/acre) + vermicompost as basal application.`,
+> **SYSTEM DIRECTIVE**: Immediate phosphorus supplementation required. Deploy bone meal (200 kg/acre) integrated with basal vermicompost.`,
 
-  'fungal': `**Preventing Fungal Disease During Monsoon:**
+  'fungal': `**[DEFENSE PROTOCOL]: Monsoon Fungal Resistance**
 
-🌧️ **Your Risk Assessment:**
-- Disease Risk Level: **HIGH** (monsoon + current humidity 88%)
-- Primary threats: Early Blight, Late Blight, Anthracnose
+🌧️ **Threat Assessment:**
+- Pathogen Risk: **CRITICAL** (Monsoon conditions + 88% Humidity)
+- Identified vectors: Early Blight, Late Blight, Anthracnose.
 
-🛡️ **Prevention Strategy (Priority Order):**
+🛡️ **Defense Directives:**
 
-**1. Cultural Controls** (Implement Immediately)
-- ✂️ Prune lower branches for air circulation
-- 📐 Maintain 45cm plant spacing (current: 25cm ⚠️)
-- 🚿 Stop overhead irrigation — switch to drip
-- 🧹 Remove fallen debris and infected leaves daily
+**1. Structural Modification** (Immediate)
+- ✂️ Prune lower biomass to increase aerodynamic flow.
+- 📐 Recalibrate plant spacing to 45cm (Current: 25cm ⚠️).
+- 🚿 Terminate overhead irrigation.
 
-**2. Preventive Sprays** (Start this week)
-- **Week 1**: Copper Hydroxide 2g/L (organic, preventive)
-- **Week 2**: Trichoderma viride soil drench (biocontrol)
-- **Week 3**: Chlorothalonil 2g/L (if risk persists)
-- Rotate fungicide groups to prevent resistance
+**2. Chemical Defense Matrix** (Deployment Schedule)
+- **Phase 1**: Copper Hydroxide 2g/L (Preventative shield).
+- **Phase 2**: Trichoderma viride deployment (Biological counter-measure).
+- **Phase 3**: Chlorothalonil 2g/L (If pathogen breaches primary defenses).
 
-**3. Monitoring Protocol**
-- 📸 AI Leaf Scan every 3 days during active monsoon
-- 📡 Set soil moisture alert threshold to 65%
-- 🌡️ Monitor leaf wetness duration (target: <6 hours/day)
+**3. Sensor Calibration**
+- 📸 Increase AI Leaf Scan frequency to 3-day intervals.
+- 📡 Lower soil moisture critical alert to 65%.
 
-**4. Drainage**
-- Ensure field drainage channels are clear
-- Raised bed cultivation reduces root zone saturation
+📅 **Automated Schedule Generated:**
+- T+0: Sensory sweep & structural modification.
+- T+48: Initiate Phase 1 chemical defense prior to incoming precipitation (60mm).
 
-📅 **Weekly Schedule:**
-| Day | Action |
-|-----|--------|
-| Mon | Scout + AI Scan |
-| Wed | Preventive spray |
-| Fri | Drainage check |
-| Sun | Remove infected material |
-
-> **Alert**: Rain forecast for Wednesday (60mm). Apply preventive spray by Tuesday evening.`,
+> **WARNING**: Atmospheric event detected in 48 hours. Execute Phase 1 defense immediately.`,
 };
 
 function getAIResponse(input: string): string {
   const lower = input.toLowerCase();
-  if (lower.includes('yellow') || lower.includes('turning')) return AI_RESPONSES['yellow'];
-  if (lower.includes('water') || lower.includes('irrigation') || lower.includes('reduce')) return AI_RESPONSES['water'];
-  if (lower.includes('organic') || lower.includes('fertilizer') || lower.includes('rice')) return AI_RESPONSES['organic'];
-  if (lower.includes('fungal') || lower.includes('monsoon') || lower.includes('prevent') || lower.includes('disease')) return AI_RESPONSES['fungal'];
+  if (lower.includes('yellow') || lower.includes('turning') || lower.includes('pathogenic')) return AI_RESPONSES['yellow'];
+  if (lower.includes('water') || lower.includes('irrigation') || lower.includes('reduce') || lower.includes('flux')) return AI_RESPONSES['water'];
+  if (lower.includes('organic') || lower.includes('fertilizer') || lower.includes('rice') || lower.includes('bio-nutrient')) return AI_RESPONSES['organic'];
+  if (lower.includes('fungal') || lower.includes('monsoon') || lower.includes('prevent') || lower.includes('disease') || lower.includes('protocol')) return AI_RESPONSES['fungal'];
 
-  return `Based on your farm data analysis:
+  return `**[SYSTEM LOG]: Query Processed**
 
-📊 **Current Farm Status:**
-- Health Score: 78/100
-- Soil Moisture: 55% (optimal)
-- Temperature: 28°C
+📊 **Current Telemetry:**
+- System Integrity: 78/100
+- Hydration Levels: 55% (Optimal)
+- Thermal Index: 28°C
 - Active Alerts: 3
 
-Your query about "${input}" is noted. Here are my recommendations:
+Your query regarding "${input}" has been logged into the central matrix. Recommended actions:
 
-1. **Monitor sensor readings** — Check the Sensors dashboard for real-time data
-2. **Run an AI scan** — Upload leaf images for disease detection
-3. **Review chemical schedule** — Check the Chemical Intelligence panel
+1. **Access Sensor Matrix** — Review live telemetry feeds.
+2. **Initialize AI Scanner** — Provide visual data for neural processing.
+3. **Review Protocols** — Check the defense and chemical deployment logs.
 
-Would you like me to provide more specific analysis on any of these areas?`;
+Awaiting further parameters...`;
 }
 
 export default function AssistantPage() {
@@ -199,7 +175,7 @@ export default function AssistantPage() {
     setTyping(true);
 
     // Simulate AI thinking
-    await new Promise((r) => setTimeout(r, 1500 + Math.random() * 1500));
+    await new Promise((r) => setTimeout(r, 1200 + Math.random() * 800));
 
     // Add AI response
     const response = getAIResponse(message);
@@ -214,62 +190,73 @@ export default function AssistantPage() {
   }, [inputValue, addMessage, setInputValue, setTyping]);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] bg-gradient-mesh">
+    <div className="flex flex-col h-[calc(100vh-6rem)] max-w-[1200px] mx-auto rounded-2xl glass-panel overflow-hidden border border-[rgba(0,255,136,0.2)] shadow-[0_0_30px_rgba(0,0,0,0.5)] mt-4">
       {/* Header */}
-      <div className="px-4 lg:px-6 py-4 border-b border-[rgba(0,255,136,0.08)]">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00ff88] to-[#00e5ff] flex items-center justify-center">
-            <Bot className="w-5 h-5 text-[#030806]" />
-          </div>
-          <div>
-            <h1 className="text-base font-bold text-[#e8f5e9]">AGRIMIND Assistant</h1>
-            <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 rounded-full bg-[#00ff88] animate-pulse" style={{ boxShadow: '0 0 6px rgba(0,255,136,0.5)' }} />
-              <span className="text-[11px] text-[#4a7c5c]">Online • References farm data in real-time</span>
+      <div className="px-6 py-5 border-b border-[rgba(0,255,136,0.15)] bg-white/50 backdrop-blur-md relative overflow-hidden">
+        <div className="absolute inset-0 bg-holographic-grid opacity-20" />
+        <div className="flex items-center justify-between relative z-10">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-[rgba(0,255,136,0.05)] border border-[rgba(0,255,136,0.2)] flex items-center justify-center relative group">
+              <div className="absolute inset-0 bg-[var(--gaia-green-500)] opacity-20 blur-xl rounded-xl group-hover:opacity-40 transition-opacity" />
+              <Bot className="w-6 h-6 text-[var(--gaia-green-500)] relative z-10 drop-shadow-[0_0_10px_rgba(0,255,136,0.8)]" />
             </div>
+            <div>
+              <h1 className="text-xl font-bold text-[var(--gaia-text-primary)] tracking-widest uppercase">Nexus AI Core</h1>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="w-2 h-2 rounded-full bg-[var(--gaia-green-500)] animate-pulse shadow-[0_0_8px_var(--gaia-green-500)]" />
+                <span className="text-xs text-[var(--gaia-green-500)] font-mono uppercase tracking-widest">Neural Link Established</span>
+              </div>
+            </div>
+          </div>
+          <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-[var(--gaia-text-muted)]">
+            <Terminal className="w-4 h-4 text-[var(--gaia-cyan)]" />
+            SYS.UPTIME: 99.99%
           </div>
         </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 lg:px-6 py-4 space-y-4">
+      <div className="flex-1 overflow-y-auto px-4 lg:px-8 py-6 space-y-6 bg-white/30">
         <AnimatePresence>
           {messages.map((msg) => (
             <motion.div
               key={msg.id}
-              className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              initial={{ opacity: 0, y: 10 }}
+              className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.4 }}
             >
               {msg.role === 'assistant' && (
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00ff88] to-[#00e5ff] flex items-center justify-center flex-shrink-0 mt-1">
-                  <Sparkles className="w-4 h-4 text-[#030806]" />
+                <div className="w-10 h-10 rounded-xl bg-[rgba(0,255,136,0.05)] border border-[rgba(0,255,136,0.2)] flex items-center justify-center flex-shrink-0 mt-1 shadow-[0_0_15px_rgba(0,255,136,0.1)]">
+                  <Sparkles className="w-5 h-5 text-[var(--gaia-cyan)] drop-shadow-[0_0_8px_rgba(0,240,255,0.8)]" />
                 </div>
               )}
               <div
-                className={`max-w-[75%] rounded-2xl px-4 py-3 ${
+                className={`max-w-[80%] rounded-2xl px-6 py-4 relative overflow-hidden ${
                   msg.role === 'user'
-                    ? 'bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.15)] text-[#e8f5e9]'
-                    : 'glass-card text-[#e8f5e9]'
+                    ? 'bg-[rgba(0,255,136,0.05)] border border-[rgba(0,255,136,0.2)] text-[var(--gaia-text-primary)] shadow-[0_0_20px_rgba(0,255,136,0.1)] rounded-tr-sm'
+                    : 'bg-black/5 border border-[var(--gaia-border-glass)] text-[var(--gaia-text-primary)] shadow-[0_4px_20px_rgba(0,0,0,0.3)] rounded-tl-sm'
                 }`}
               >
-                <div className="text-sm leading-relaxed whitespace-pre-wrap prose-sm prose-invert"
+                {msg.role === 'assistant' && <div className="absolute inset-0 bg-gradient-to-br from-[rgba(0,255,136,0.02)] to-transparent pointer-events-none" />}
+                
+                <div className="text-sm leading-relaxed whitespace-pre-wrap font-medium relative z-10"
                   dangerouslySetInnerHTML={{
                     __html: msg.content
-                      .replace(/\*\*(.*?)\*\*/g, '<strong class="text-[#00ff88]">$1</strong>')
+                      .replace(/\*\*(.*?)\*\*/g, '<strong class="text-[var(--gaia-green-500)] drop-shadow-[0_0_5px_rgba(0,255,136,0.4)] tracking-wide">$1</strong>')
                       .replace(/\n/g, '<br/>')
-                      .replace(/`(.*?)`/g, '<code class="text-[#00e5ff] bg-[rgba(0,229,255,0.1)] px-1 rounded text-xs">$1</code>')
-                      .replace(/\|(.*?)\|/g, '<span class="text-[#81c784]">|$1|</span>')
+                      .replace(/`(.*?)`/g, '<code class="text-[var(--gaia-cyan)] bg-[rgba(0,240,255,0.1)] border border-[rgba(0,240,255,0.2)] px-1.5 py-0.5 rounded text-xs font-mono">$1</code>')
+                      .replace(/> (.*?)(<br\/>|$)/g, '<div class="border-l-2 border-[var(--gaia-cyan)] pl-3 my-2 text-[var(--gaia-cyan)] bg-[rgba(0,240,255,0.05)] p-2 rounded-r-md">$1</div>$2')
+                      .replace(/\[(.*?)\]/g, '<span class="text-[var(--gaia-cyan)] font-mono text-xs uppercase tracking-widest">[$1]</span>')
                   }}
                 />
-                <p className="text-[10px] text-[#4a7c5c] mt-2">
-                  {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </p>
+                <div className={`text-[10px] font-mono mt-3 uppercase tracking-widest ${msg.role === 'user' ? 'text-[var(--gaia-green-500)] text-right' : 'text-[var(--gaia-text-muted)]'}`}>
+                  {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                </div>
               </div>
               {msg.role === 'user' && (
-                <div className="w-8 h-8 rounded-lg bg-[rgba(0,255,136,0.15)] flex items-center justify-center flex-shrink-0 mt-1">
-                  <User className="w-4 h-4 text-[#00ff88]" />
+                <div className="w-10 h-10 rounded-xl bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.3)] flex items-center justify-center flex-shrink-0 mt-1 shadow-[0_0_15px_rgba(0,255,136,0.2)]">
+                  <User className="w-5 h-5 text-[var(--gaia-green-500)] drop-shadow-[0_0_8px_rgba(0,255,136,0.8)]" />
                 </div>
               )}
             </motion.div>
@@ -279,17 +266,17 @@ export default function AssistantPage() {
         {/* Typing indicator */}
         {isTyping && (
           <motion.div
-            className="flex gap-3"
+            className="flex gap-4"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00ff88] to-[#00e5ff] flex items-center justify-center flex-shrink-0">
-              <Sparkles className="w-4 h-4 text-[#030806]" />
+            <div className="w-10 h-10 rounded-xl bg-[rgba(0,255,136,0.05)] border border-[rgba(0,255,136,0.2)] flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(0,255,136,0.1)]">
+              <Sparkles className="w-5 h-5 text-[var(--gaia-cyan)] animate-pulse" />
             </div>
-            <div className="glass-card px-4 py-3 flex items-center gap-1">
-              <span className="typing-dot" />
-              <span className="typing-dot" />
-              <span className="typing-dot" />
+            <div className="bg-black/5 border border-[var(--gaia-border-glass)] rounded-2xl rounded-tl-sm px-6 py-4 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[var(--gaia-green-500)] animate-bounce" style={{ animationDelay: '0ms' }} />
+              <span className="w-2 h-2 rounded-full bg-[var(--gaia-green-500)] animate-bounce" style={{ animationDelay: '150ms' }} />
+              <span className="w-2 h-2 rounded-full bg-[var(--gaia-green-500)] animate-bounce" style={{ animationDelay: '300ms' }} />
             </div>
           </motion.div>
         )}
@@ -299,20 +286,21 @@ export default function AssistantPage() {
 
       {/* Suggested Prompts */}
       {messages.length <= 1 && (
-        <div className="px-4 lg:px-6 pb-2">
-          <div className="grid grid-cols-2 gap-2">
+        <div className="px-6 pb-4 bg-white/30">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {SUGGESTED_PROMPTS.map((prompt, i) => (
               <motion.button
                 key={i}
-                className="flex items-center gap-2 p-3 rounded-xl bg-[rgba(0,255,136,0.03)] border border-[rgba(0,255,136,0.08)] hover:border-[rgba(0,255,136,0.2)] transition-colors text-left"
+                className="flex items-center gap-3 p-4 rounded-xl bg-black/5 border border-[var(--gaia-border-glass)] hover:border-[rgba(0,255,136,0.3)] hover:bg-[rgba(0,255,136,0.05)] transition-all text-left group shadow-[0_4px_10px_rgba(0,0,0,0.2)]"
                 onClick={() => handleSend(prompt.text)}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.1 }}
-                whileHover={{ scale: 1.01 }}
+                transition={{ delay: 0.3 + i * 0.1 }}
               >
-                <prompt.icon className="w-4 h-4 flex-shrink-0" style={{ color: prompt.color }} />
-                <span className="text-xs text-[#81c784] line-clamp-1">{prompt.text}</span>
+                <div className="p-2 rounded-lg bg-[rgba(0,0,0,0.5)] border border-[var(--gaia-border-glass)] group-hover:border-[currentColor]" style={{ color: prompt.color }}>
+                  <prompt.icon className="w-4 h-4" />
+                </div>
+                <span className="text-xs text-[var(--gaia-text-secondary)] font-medium font-mono uppercase tracking-wide group-hover:text-[var(--gaia-text-primary)] transition-colors">{prompt.text}</span>
               </motion.button>
             ))}
           </div>
@@ -320,25 +308,28 @@ export default function AssistantPage() {
       )}
 
       {/* Input */}
-      <div className="px-4 lg:px-6 py-4 border-t border-[rgba(0,255,136,0.08)]">
-        <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-[rgba(0,255,136,0.04)] border border-[rgba(0,255,136,0.1)] focus-within:border-[rgba(0,255,136,0.3)] transition-colors">
+      <div className="px-6 py-5 border-t border-[rgba(0,255,136,0.15)] bg-white/50 backdrop-blur-md relative z-10">
+        <div className="flex items-center gap-3 p-2 rounded-2xl bg-[rgba(0,0,0,0.5)] border border-[rgba(0,255,136,0.2)] focus-within:border-[var(--gaia-green-500)] focus-within:shadow-[0_0_20px_rgba(0,255,136,0.15)] transition-all">
+          <div className="pl-4">
+            <Terminal className="w-4 h-4 text-[var(--gaia-text-dim)]" />
+          </div>
           <input
             ref={inputRef}
             type="text"
-            placeholder="Ask AGRIMIND anything about your farm..."
+            placeholder="Enter command or query matrix..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            className="flex-1 bg-transparent text-sm text-[#e8f5e9] placeholder-[#4a7c5c] outline-none"
+            className="flex-1 bg-transparent text-sm text-[var(--gaia-text-primary)] placeholder-[var(--gaia-text-dim)] outline-none font-mono py-2"
           />
           <motion.button
             onClick={() => handleSend()}
-            className="w-9 h-9 rounded-lg bg-[#00ff88] flex items-center justify-center text-[#030806] disabled:opacity-30"
+            className="w-12 h-12 rounded-xl btn-cyber flex items-center justify-center disabled:opacity-30 disabled:pointer-events-none"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             disabled={!inputValue.trim()}
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-5 h-5" />
           </motion.button>
         </div>
       </div>

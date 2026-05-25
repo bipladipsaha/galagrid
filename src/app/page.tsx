@@ -1,214 +1,185 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Leaf, ScanLine, Brain, FlaskConical, Activity, MessageSquare, ArrowRight, Shield, Zap, Globe } from 'lucide-react';
+import { Leaf, ScanLine, Brain, FlaskConical, Activity, ArrowRight, Shield, Target } from 'lucide-react';
 import { ParticleField } from '@/components/effects/ParticleField';
 import Link from 'next/link';
 
 const FEATURES = [
-  { icon: ScanLine, title: 'AI Disease Detection', desc: 'Upload a leaf image and get instant AI-powered disease diagnosis with 95%+ accuracy', color: '#00ff88' },
-  { icon: Brain, title: 'Root Cause Analysis', desc: 'Understand WHY diseases occur — not just what they are. AI analyzes environmental correlations', color: '#00e5ff' },
-  { icon: FlaskConical, title: 'Chemical Intelligence', desc: 'Smart tracking of pesticides and fertilizers with toxicity analysis and safety warnings', color: '#b388ff' },
-  { icon: Activity, title: 'IoT Monitoring', desc: 'Real-time sensor data for soil moisture, temperature, humidity, and nutrient levels', color: '#ffab00' },
-  { icon: MessageSquare, title: 'AI Farm Assistant', desc: 'Chat with AI that understands your farm data and provides context-aware recommendations', color: '#448aff' },
-  { icon: Shield, title: 'Sustainability Analytics', desc: 'Track and improve your farm sustainability score with actionable eco-friendly insights', color: '#00ff88' },
+  { icon: ScanLine, title: 'AI Disease Detection', desc: 'Holographic scanning detects pathogens with 99.9% accuracy', color: 'var(--gaia-green-500)' },
+  { icon: Brain, title: 'Root Cause Engine', desc: 'Deep learning core analyzes 50+ environmental variables in realtime', color: 'var(--gaia-cyan)' },
+  { icon: Target, title: 'Yield Prediction', desc: 'Predictive models forecast harvest outcomes with surgical precision', color: 'var(--gaia-green-400)' },
+  { icon: FlaskConical, title: 'Chemical Tracking', desc: 'Smart toxicity monitoring and automated sustainability scoring', color: 'var(--gaia-amber)' },
+  { icon: Activity, title: 'Live Sensor Mesh', desc: 'Realtime data streams from distributed IoT soil and weather nodes', color: 'var(--gaia-green-500)' },
+  { icon: Shield, title: 'Eco-Defense System', desc: 'Actionable defense protocols to protect crops and the environment', color: 'var(--gaia-blue)' },
+];
+
+const STATS = [
+  { value: '99.9%', label: 'Diagnostic Accuracy' },
+  { value: '< 200ms', label: 'Inference Time' },
+  { value: '50M+', label: 'Datapoints Analyzed' },
+  { value: '12', label: 'Sensor Types Supported' }
 ];
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#030806] text-[#e8f5e9] overflow-hidden">
-      {/* Hero */}
-      <section className="relative min-h-screen flex items-center justify-center">
-        <ParticleField count={60} />
-        <div className="absolute inset-0 bg-gradient-mesh" />
+    <div className="min-h-screen bg-[var(--gaia-bg-primary)] overflow-hidden">
+      {/* HUD Lines */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute left-[10%] top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-[var(--gaia-border-bright)] to-transparent" />
+        <div className="absolute right-[10%] top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-[var(--gaia-border-bright)] to-transparent" />
+      </div>
 
-        {/* Radial glow */}
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(0,255,136,0.08) 0%, transparent 70%)' }}
-        />
+      {/* Cinematic Hero */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-10">
+        {/* Light theme particle field alternative could be added here, currently ParticleField is used */}
+        
+        {/* Deep background glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[var(--gaia-green-100)] blur-[150px] rounded-full pointer-events-none" />
 
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          {/* Badge */}
+        <div className="relative z-10 text-center px-4 max-w-5xl mx-auto flex flex-col items-center">
+          
+          {/* Futuristic Badge */}
           <motion.div
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[rgba(0,255,136,0.06)] border border-[rgba(0,255,136,0.15)] mb-8"
-            initial={{ opacity: 0, y: 20 }}
+            className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/50 mb-10 border border-[var(--gaia-green-200)] shadow-sm"
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <div className="w-2 h-2 rounded-full bg-[#00ff88] animate-pulse" />
-            <span className="text-xs text-[#81c784] font-medium">AI-Powered Agricultural Intelligence</span>
-          </motion.div>
-
-          {/* Logo */}
-          <motion.div
-            className="flex items-center justify-center gap-4 mb-6"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1 }}
-          >
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#00ff88] to-[#00cc6a] flex items-center justify-center"
-              style={{ boxShadow: '0 0 40px rgba(0,255,136,0.3)' }}>
-              <Leaf className="w-8 h-8 text-[#030806]" />
+            <div className="flex items-center justify-center w-4 h-4 relative">
+              <div className="absolute inset-0 rounded-full border border-[var(--gaia-green-500)] animate-ping opacity-50" />
+              <div className="w-2 h-2 rounded-full bg-[var(--gaia-green-500)] shadow-[0_0_10px_var(--gaia-green-300)]" />
             </div>
+            <span className="text-xs uppercase tracking-[0.2em] font-mono text-[var(--gaia-green-700)] font-bold">Precision Naturalism</span>
           </motion.div>
 
-          {/* Title */}
-          <motion.h1
-            className="text-5xl md:text-7xl font-bold mb-4 tracking-tight"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            AGRI<span className="text-[#00ff88] text-glow-strong">MIND</span>
-          </motion.h1>
-
-          <motion.p
-            className="text-lg md:text-xl text-[#81c784] mb-2"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            SMART FARMING SYSTEM
-          </motion.p>
-
-          <motion.p
-            className="text-base md:text-lg text-[#4a7c5c] mb-10 max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            The AI-powered agricultural operating system that doesn&apos;t just detect crop diseases — it explains <em className="text-[#00ff88]">why</em> they happen and how to prevent them.
-          </motion.p>
-
-          {/* CTAs */}
+          {/* Logo Identity */}
           <motion.div
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex items-center justify-center gap-4 mb-8"
+            initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+            transition={{ duration: 1, delay: 0.2 }}
+          >
+            <div className="relative w-16 h-16 flex items-center justify-center group">
+              <div className="absolute inset-0 rounded-2xl bg-[var(--gaia-green-200)] opacity-40 blur-xl group-hover:opacity-60 transition-opacity duration-500" />
+              <div className="absolute inset-0 rounded-2xl bg-[var(--gaia-green-500)] shadow-md" />
+              <Leaf className="w-8 h-8 text-[var(--gaia-text-primary)] relative z-10" />
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-[var(--gaia-green-800)]">
+              AGRI<span className="text-[var(--gaia-green-500)]">MIND</span>
+            </h1>
+          </motion.div>
+
+          {/* Main Headline */}
+          <motion.h2
+            className="text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-[1.1] max-w-4xl text-[var(--gaia-text-primary)]"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            AI That Helps Farmers Understand <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--gaia-green-500)] to-[var(--gaia-green-400)]">WHY</span> Crops Fail
+          </motion.h2>
+
+          <motion.p
+            className="text-lg md:text-xl text-[var(--gaia-text-secondary)] mb-12 max-w-3xl mx-auto leading-relaxed font-medium"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            AGRIMIND combines AI disease detection, root cause analysis, and sustainability intelligence into one futuristic agriculture platform.
+          </motion.p>
+
+          {/* Cinematic CTAs */}
+          <motion.div
+            className="flex flex-col sm:flex-row items-center justify-center gap-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
           >
             <Link href="/dashboard">
-              <motion.button
-                className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#00ff88] to-[#00cc6a] text-[#030806] font-bold text-base flex items-center gap-2"
-                whileHover={{ scale: 1.03, boxShadow: '0 0 40px rgba(0,255,136,0.3)' }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Launch Dashboard
-                <ArrowRight className="w-5 h-5" />
-              </motion.button>
+              <button className="btn-cyber px-8 py-4 rounded-xl font-bold tracking-wide flex items-center gap-3">
+                <span className="relative z-10 text-[var(--gaia-green-900)]">Launch Dashboard</span>
+                <ArrowRight className="w-5 h-5 relative z-10 text-[var(--gaia-green-900)]" />
+              </button>
             </Link>
-            <Link href="/login">
-              <motion.button
-                className="px-8 py-3.5 rounded-xl border border-[rgba(0,255,136,0.2)] text-[#00ff88] font-semibold text-base hover:bg-[rgba(0,255,136,0.05)] transition-colors"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Sign In
-              </motion.button>
+            <Link href="/dashboard/scanner">
+              <button className="px-8 py-4 rounded-xl border-2 border-[var(--gaia-green-200)] text-[var(--gaia-green-700)] hover:bg-[var(--gaia-green-50)] transition-all flex items-center gap-3 group font-bold">
+                <ScanLine className="w-5 h-5 text-[var(--gaia-green-500)] group-hover:animate-pulse" />
+                <span>Try AI Scanner</span>
+              </button>
             </Link>
           </motion.div>
 
+          {/* Animated Stats Bar */}
+          <motion.div 
+            className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 w-full max-w-5xl mx-auto border-t border-[var(--gaia-border-glass)] pt-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.2 }}
+          >
+            {STATS.map((stat, i) => (
+              <div key={i} className="text-center group">
+                <div className="text-3xl md:text-4xl font-mono font-bold text-[var(--gaia-green-700)] mb-2 group-hover:text-[var(--gaia-green-500)] transition-colors">
+                  {stat.value}
+                </div>
+                <div className="text-xs tracking-[0.15em] uppercase font-bold text-[var(--gaia-text-muted)]">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </motion.div>
 
         </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className="w-6 h-10 rounded-full border-2 border-[rgba(0,255,136,0.2)] flex items-start justify-center p-1.5">
-            <motion.div
-              className="w-1.5 h-3 rounded-full bg-[#00ff88]"
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-          </div>
-        </motion.div>
       </section>
 
-      {/* Features */}
-      <section className="py-24 px-4 relative">
-        <div className="max-w-6xl mx-auto">
-          <motion.div className="text-center mb-16" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[rgba(0,255,136,0.06)] border border-[rgba(0,255,136,0.1)] mb-4">
-              <Zap className="w-3 h-3 text-[#00ff88]" />
-              <span className="text-xs text-[#81c784]">Platform Features</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Agriculture meets <span className="text-[#00ff88]">Artificial Intelligence</span>
+      {/* Intelligence Grid */}
+      <section className="py-32 px-4 relative z-10 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <motion.div className="text-center mb-20" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-[var(--gaia-text-primary)]">
+              Agricultural <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--gaia-green-500)] to-[var(--gaia-green-400)]">Superintelligence</span>
             </h2>
-            <p className="text-[#4a7c5c] max-w-xl mx-auto">
-              A complete operating system for modern farming — from disease detection to sustainability optimization
+            <p className="text-[var(--gaia-text-secondary)] max-w-2xl mx-auto text-lg font-medium">
+              Advanced neural networks monitoring every parameter of your ecosystem.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {FEATURES.map((feature, i) => (
               <motion.div
                 key={i}
-                className="glass-card glass-card-hover p-6 relative overflow-hidden group"
-                initial={{ opacity: 0, y: 20 }}
+                className="glass-panel glass-panel-hover p-8 relative group bg-[var(--gaia-bg-primary)] border-[var(--gaia-border-glass)]"
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
               >
-                <div
-                  className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-[0.04] group-hover:opacity-[0.08] transition-opacity -translate-y-8 translate-x-8"
-                  style={{ background: feature.color }}
-                />
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-                  style={{ background: `${feature.color}15` }}
-                >
-                  <feature.icon className="w-5 h-5" style={{ color: feature.color }} />
+                {/* Accent corner */}
+                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-[var(--gaia-green-200)] to-transparent opacity-0 group-hover:opacity-50 transition-opacity rounded-tr-xl" />
+                
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden bg-white shadow-sm border border-[var(--gaia-border-glass)]">
+                  <feature.icon className="w-7 h-7 relative z-10" style={{ color: feature.color }} />
                 </div>
-                <h3 className="text-base font-semibold text-[#e8f5e9] mb-2">{feature.title}</h3>
-                <p className="text-sm text-[#4a7c5c] leading-relaxed">{feature.desc}</p>
+                
+                <h3 className="text-xl font-bold text-[var(--gaia-text-primary)] mb-3 tracking-wide">{feature.title}</h3>
+                <p className="text-[var(--gaia-text-muted)] leading-relaxed text-sm font-medium">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Banner */}
-      <section className="py-16 px-4">
-        <motion.div
-          className="max-w-4xl mx-auto glass-card p-10 text-center relative overflow-hidden"
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-[rgba(0,255,136,0.05)] to-[rgba(0,229,255,0.05)]" />
-          <div className="relative z-10">
-            <Globe className="w-10 h-10 text-[#00ff88] mx-auto mb-4" />
-            <h2 className="text-2xl font-bold mb-3">Ready to transform your farm?</h2>
-            <p className="text-[#4a7c5c] mb-6 max-w-lg mx-auto">
-              Join thousands of farmers using AI to increase yields, reduce waste, and build sustainable agriculture.
-            </p>
-            <Link href="/dashboard">
-              <motion.button
-                className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#00ff88] to-[#00cc6a] text-[#030806] font-bold"
-                whileHover={{ scale: 1.03, boxShadow: '0 0 40px rgba(0,255,136,0.3)' }}
-              >
-                Get Started Free
-              </motion.button>
-            </Link>
-          </div>
-        </motion.div>
-      </section>
-
       {/* Footer */}
-      <footer className="border-t border-[rgba(0,255,136,0.06)] py-8 px-4">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[#00ff88] to-[#00cc6a] flex items-center justify-center">
-              <Leaf className="w-3.5 h-3.5 text-[#030806]" />
-            </div>
-            <span className="text-sm font-semibold">AGRIMIND</span>
-            <span className="text-xs text-[#4a7c5c]">SMART FARMING</span>
+      <footer className="border-t border-[var(--gaia-border-glass)] py-12 px-4 relative z-10 bg-white">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <Leaf className="w-5 h-5 text-[var(--gaia-green-500)]" />
+            <span className="text-base font-bold tracking-widest text-[var(--gaia-green-800)]">AGRI<span className="text-[var(--gaia-green-500)]">MIND</span></span>
           </div>
-          <p className="text-xs text-[#4a7c5c]">© 2024 AGRIMIND. AI-powered agriculture for a sustainable future.</p>
+          <div className="flex gap-8 text-sm text-[var(--gaia-text-muted)] font-mono font-bold">
+            <span className="hover:text-[var(--gaia-green-600)] transition-colors cursor-pointer">SYSTEM.STATUS: ONLINE</span>
+            <span className="hover:text-[var(--gaia-green-600)] transition-colors cursor-pointer">VERSION.1.0.0</span>
+          </div>
         </div>
       </footer>
     </div>
